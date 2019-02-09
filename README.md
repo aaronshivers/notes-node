@@ -1,6 +1,6 @@
 # notes-node
 
-#Options:
+# Options:
 --version    Show version number
 --help       Show help
 --title, -t  Title of note 
