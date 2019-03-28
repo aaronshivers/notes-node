@@ -4,6 +4,8 @@ const yargs = require('yargs')
 
 const notes = require('./notes.js')
 
+let message
+
 // set options for title
 const titleOptions =  {
   describe: "Title of note",
@@ -37,53 +39,62 @@ const argv = yargs
 // get argument from cli
 const command = argv._[0]
 
-// 'add' command
-if (command === 'add') {
+switch (command) {
 
-  // create note
-  const note = notes.addNote(argv.title, argv.body)
+  // add note
+  case 'add':
 
-  // create and log note
-  if (note) {
-    console.log('Note created...')
+    // create note
+    const note = notes.addNote(argv.title, argv.body)
+
+    // create message
+    message = note ? 'Note created...' : `The note: ${ argv.title } already exists.`
+
+    // log note and message
     notes.logNote(note)
-  } else {
-    console.log(`The note: ${ argv.title } already exists.`)
-  }
+    console.log(message)
 
-// 'list' command
-} else if (command === 'list') {
+    break
 
-  // get and log notes
-  const allNotes = notes.getAll()
-  console.log(`Printing ${allNotes.length} note(s).`)
-  allNotes.forEach(note => notes.logNote(note))
+  // list all notes
+  case 'list':
 
-// 'read' command
-} else if (command === 'read') {
+    // get and log notes
+    const allNotes = notes.getAll()
+    console.log(`Printing ${allNotes.length} note(s).`)
+    allNotes.forEach(note => notes.logNote(note))
 
-  // get note
-  const note = notes.getNote(argv.title, argv.body)
+    break
 
-  // log note
-  if (note) {
-    console.log('Note read')
-    notes.logNote(note)
-  } else {
-    console.log('Note not found')
-  }
+  // read one note
+  case 'read':
 
-// 'remove' command
-} else if (command === 'remove') {
-  
+    // get note
+    const foundNote = notes.getNote(argv.title, argv.body)
+
+    // create message
+    message = foundNote ? 'Note read' : 'Note not found'
+    
+    // log note and message
+    notes.logNote(foundNote)
+    console.log(message)
+
+    break
+
   // remove note
-  const noteRemoved = notes.removeNote(argv.title)
+  case 'remove':
 
-  // create and log message
-  const message = noteRemoved ? `Note removed` : 'Note not found'
-  console.log(message)
+    // remove note
+    const removedNote = notes.removeNote(argv.title)
 
-// error message
-} else {
-  console.log('Command not recognized')
+    // create and log message
+    message = removedNote ? `Note removed` : 'Note not found'
+    console.log(message)
+
+    break
+
+  default:
+
+    // error message
+    console.log('Command not recognized')
 }
