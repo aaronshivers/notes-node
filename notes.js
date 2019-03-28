@@ -25,9 +25,7 @@ const addNote = (title, body) => {
   }
 }
 
-const getAll = () => {
-  return fetchNotes()
-}
+const getAll = () => fetchNotes()
 
 const getNote = title => {
   const notes = fetchNotes()
@@ -45,8 +43,8 @@ const removeNote = title => {
 
 const logNote = note => {
   console.log('--')
-  console.log(`Title: ${note.title}`)
-  console.log(`Body: ${note.body}`)
+  console.log(`Title: ${ note.title }`)
+  console.log(`Body: ${ note.body }`)
 }
 
 module.exports = {
