@@ -1,56 +1,53 @@
-const fs = require('fs');
+const fs = require('fs')
 
-var fetchNotes = () => {
+const fetchNotes = () => {
   try {
-    var notesString = fs.readFileSync('notes-data.json');
-    return JSON.parse(notesString);
+    const notesString = fs.readFileSync('notes-data.json')
+    return JSON.parse(notesString)
   } catch (e) {
-    return [];
+    return []
   }
-};
+}
 
-var saveNotes = (notes) => {
-  fs.writeFileSync('notes-data.json', JSON.stringify(notes));
-};
+const saveNotes = notes => {
+  fs.writeFileSync('notes-data.json', JSON.stringify(notes))
+}
 
-var addNote = (title, body) => {
-  var notes = fetchNotes();
-  var note = {
-    title,
-    body
-  };
-  var duplicateNotes = notes.filter((note) => note.title === title);
+const addNote = (title, body) => {
+  const notes = fetchNotes()
+  const note = { title, body }
+  const duplicateNotes = notes.filter(note => note.title === title)
   
   if (duplicateNotes.length === 0) {
-    notes.push(note);
-    saveNotes(notes);
-    return note;
+    notes.push(note)
+    saveNotes(notes)
+    return note
   }
-};
-
-var getAll = () => {
-  return fetchNotes();
 }
 
-var getNote = (title) => {
-  var notes = fetchNotes();
-  var filteredNotes = notes.filter((note) => note.title === title);
-  return filteredNotes[0];
+const getAll = () => {
+  return fetchNotes()
 }
 
-var removeNote = (title) => {
-  var notes = fetchNotes();
-  var filteredNotes = notes.filter((note) => note.title !== title);
-  saveNotes(filteredNotes);
+const getNote = title => {
+  const notes = fetchNotes()
+  const filteredNotes = notes.filter(note => note.title === title)
+  return filteredNotes[0]
+}
 
-  return notes.length !== filteredNotes.length;
-};
+const removeNote = title => {
+  const notes = fetchNotes()
+  const filteredNotes = notes.filter(note => note.title !== title)
+  saveNotes(filteredNotes)
 
-var logNote = (note) => {
-  console.log('--');
-  console.log(`Title: ${note.title}`);
-  console.log(`Body: ${note.body}`);
-};
+  return notes.length !== filteredNotes.length
+}
+
+const logNote = note => {
+  console.log('--')
+  console.log(`Title: ${note.title}`)
+  console.log(`Body: ${note.body}`)
+}
 
 module.exports = {
   addNote,
